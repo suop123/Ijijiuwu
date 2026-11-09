@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Una invitación 💌</title>
+<meta property="og:title" content="Una invitación 💌">
+<meta property="og:description" content="Tengo algo para preguntarte ✨">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rosa-1:#ffc9e1;
+    --rosa-2:#ff9ecb;
+    --rosa-3:#ff7ab6;
+    --fucsia:#ff2e86;
+    --ciruela:#8f1d58;
+    --papel:#fff6fa;
+    --dorado:#ffe27a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100vh;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:176px 16px 150px;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(255,255,255,.55), transparent 38%),
+      radial-gradient(circle at 85% 80%, rgba(255,255,255,.35), transparent 42%),
+      linear-gradient(160deg, var(--rosa-1) 0%, var(--rosa-2) 48%, var(--rosa-3) 100%);
+    background-attachment:fixed;
+    font-family:"Gaegu","Comic Sans MS",cursive;
+    color:var(--ciruela);
+    overflow-x:hidden;
+  }
+
+  /* brillitos perpetuos */
+  #fx{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none}
+
+  /* destello */
+  #flash{
+    position:fixed; inset:0; z-index:4; pointer-events:none; opacity:0;
+    background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.95), rgba(255,226,122,.55) 38%, transparent 70%);
+  }
+  #flash.go{animation:flash .9s ease-out}
+  @keyframes flash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+
+  /* stickers */
+  .afiche, .esquina{
+    position:fixed; z-index:1; display:block;
+    border:5px solid #fff; background:#fff;
+    box-shadow:0 14px 30px -8px rgba(150,30,90,.5);
+  }
+  .afiche{top:14px; left:14px; width:96px; border-radius:10px; transform:rotate(-6deg)}
+  .esquina{bottom:14px; right:14px; width:112px; border-radius:22px; transform:rotate(5deg)}
+  .afiche.glow{animation:glow 2.2s ease-in-out 2}
+  @keyframes glow{
+    0%,100%{box-shadow:0 14px 30px -8px rgba(150,30,90,.5)}
+    50%{box-shadow:0 0 0 6px rgba(255,226,122,.9), 0 0 38px 12px rgba(255,226,122,.9)}
+  }
+
+  /* carta */
+  .card{
+    position:relative; z-index:2;
+    width:min(92vw, 470px);
+    padding:46px 26px 34px;
+    background:linear-gradient(180deg,#fffafc,var(--papel) 60%,#ffeaf4);
+    border-radius:30px;
+    box-shadow:0 26px 60px -14px rgba(190,40,110,.55), 0 0 0 7px rgba(255,255,255,.55);
+    text-align:center;
+  }
+  .card::before{
+    content:""; position:absolute; inset:12px; pointer-events:none;
+    border:2.5px dashed #ffa6cf; border-radius:22px;
+  }
+  .cinta{
+    position:absolute; top:-15px; left:50%; width:112px; height:32px;
+    transform:translateX(-50%) rotate(-3deg);
+    background:repeating-linear-gradient(45deg,#ff8fc2 0 10px,#ffb9da 10px 20px);
+    border-radius:4px; box-shadow:0 2px 6px rgba(0,0,0,.14);
+  }
+  .gatitos{
+    position:absolute; top:-40px; right:-8px; width:78px; height:78px;
+    border-radius:18px; border:3px solid #fff; transform:rotate(8deg);
+    box-shadow:0 8px 18px -6px rgba(150,30,90,.5);
+  }
+
+  #msg{
+    min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-size:clamp(2.1rem, 9vw, 3rem); font-weight:700; line-height:1.12;
+    text-shadow:0 2px 0 #fff;
+    transition:opacity .5s ease;
+  }
+  #msg.out{opacity:0}
+  .linea{display:block}
+  .linea + .linea{margin-top:.35em; font-size:.8em}
+  .w{
+    display:inline-block; margin:0 .13em;
+    opacity:0; transform:translateY(12px) scale(.8);
+    transition:opacity .4s ease, transform .55s cubic-bezier(.3,1.7,.5,1);
+  }
+  .w.on{opacity:1; transform:none}
+  #msg.final .linea:first-child{font-size:1.3em}
+  .slam{display:block; font-size:1.15em; text-align:center; animation:slam .5s cubic-bezier(.2,1.8,.4,1) both}
+  .slam.c0{color:var(--ciruela)}
+  .slam.c1{color:var(--fucsia)}
+  .slam.c2{color:#c2185b}
+  @keyframes slam{
+    0%{opacity:0; transform:scale(2.6) rotate(-6deg)}
+    60%{opacity:1; transform:scale(.92) rotate(2deg)}
+    100%{opacity:1; transform:scale(1) rotate(0)}
+  }
+
+  /* botones */
+  .actions{
+    display:flex; gap:16px; justify-content:center; align-items:center; flex-wrap:wrap;
+    margin-top:18px; opacity:0; transform:translateY(10px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .actions[hidden]{display:none}
+  .actions.show{opacity:1; transform:none}
+  .btn{
+    font-family:"Fredoka","Trebuchet MS",sans-serif; font-weight:600; font-size:1.25rem;
+    border:0; border-radius:999px; padding:14px 30px; cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:focus-visible{outline:3px solid var(--ciruela); outline-offset:3px}
+  #yes{
+    color:#fff; background:linear-gradient(135deg,#ff5fa2,var(--fucsia));
+    box-shadow:0 8px 20px rgba(255,46,134,.45);
+  }
+  #yes:hover{transform:scale(1.07)}
+  #no{
+    color:#b0467c; background:#fff; border:2px solid #ffc0dc;
+    box-shadow:0 6px 14px rgba(190,40,110,.18);
+  }
+  #no.free{position:fixed; z-index:6; transition:left .28s ease, top .28s ease}
+
+  /* pantallas grandes: afiche al costado, esquina abajo a la derecha */
+  @media (min-width:900px){
+    body{padding:40px}
+    .afiche{
+      top:50%; left:max(3vw,24px); width:clamp(190px,18vw,260px);
+      transform:translateY(-50%) rotate(-5deg); border-width:7px; border-radius:12px;
+    }
+    .esquina{bottom:4vh; right:3vw; width:clamp(170px,16vw,230px); border-width:7px; transform:rotate(5deg)}
+  }
+  @media (min-width:600px) and (max-width:899px){
+    .afiche{width:130px}
+    .esquina{width:150px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .w, #msg, .actions, #no.free{transition:none}
+    .afiche.glow{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="flash" aria-hidden="true"></div>
+
+<img class="afiche" id="afiche" src="afiche.jpg" width="250" height="370" alt="Afiche de la película Ebenezer">
+<img class="esquina" src="esquina.jpg" width="450" height="444" alt="Imagen con orejitas de gato y una rosa sobre un fondo de corazones rosas">
+
+<main class="card">
+  <span class="cinta" aria-hidden="true"></span>
+  <img class="gatitos" src="gatitos.gif" width="165" height="165" alt="">
+  <div id="msg" aria-live="polite"></div>
+  <div class="actions" id="actions" hidden>
+    <button class="btn" id="yes" type="button">Sí 💖</button>
+    <button class="btn" id="no" type="button">No 🙈</button>
+  </div>
+</main>
+
+<script>
+(function () {
+  // Si quieres que salga su nombre, escríbelo aquí. Ejemplo: const NOMBRE = "Ana";
+  const NOMBRE = "Meliiiii";
+
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (s) => document.querySelector(s);
+  const sleep = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  /* ---------- canvas: brillitos de fondo, destello y lluvia ---------- */
+  const cv = $("#fx"), ctx = cv.getContext("2d");
+  const COLS = ["#ffffff", "#fff3b0", "#ffe27a", "#ffd9ec"];
+  const EMOJIS = ["💖", "💗", "💕", "✨", "⭐", "🌟", "💘"];
+  let W, H, stars = [], parts = [], rainUntil = 0;
+
+  function mkStar(initial) {
+    return {
+      x: rand(0, W), y: initial ? rand(0, H) : H + 12,
+      r: rand(3, 9), ph: rand(0, 6.28), sp: rand(0.8, 2.2),
+      vy: rand(0.08, 0.35), col: pick(COLS)
+    };
+  }
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(110, (W * H) / 9000));
+    stars = Array.from({ length: n }, () => mkStar(true));
+    if (reduce) draw(0);
+  }
+  function spark(x, y, r, col, a) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.globalAlpha = a * 0.28;
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.9, 0, 6.283); ctx.fill();
+    ctx.globalAlpha = a;
+    ctx.beginPath();
+    ctx.moveTo(0, -r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.quadraticCurveTo(0, 0, 0, r);
+    ctx.quadraticCurveTo(0, 0, -r, 0);
+    ctx.quadraticCurveTo(0, 0, 0, -r);
+    ctx.fill();
+    ctx.restore();
+  }
+  function burst(x, y, small) {
+    if (x == null) {
+      const b = $(".card").getBoundingClientRect();
+      x = b.left + b.width / 2; y = b.top + b.height / 2;
+    }
+    if (!small) {
+      const f = $("#flash");
+      f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
+    }
+    if (reduce) return;
+    for (let i = 0; i < (small ? 16 : 44); i++) {
+      const a = rand(0, 6.283), s = rand(2, 8);
+      parts.push({
+        kind: "star", x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+        r: rand(4, 12), col: pick(COLS), life: rand(55, 100), age: 0
+      });
+    }
+  }
+  function rain(ms) {
+    if (reduce) return;
+    rainUntil = performance.now() + ms;
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    for (const s of stars) {
+      if (!reduce) {
+        s.y -= s.vy;
+        if (s.y < -12) Object.assign(s, mkStar(false));
+      }
+      const a = reduce ? 0.7 : 0.3 + 0.7 * Math.abs(Math.sin(t / 1000 * s.sp + s.ph));
+      spark(s.x, s.y, s.r, s.col, a);
+    }
+    if (reduce) return;
+    if (t < rainUntil && parts.length < 320 && Math.random() < 0.55) {
+      parts.push({
+        kind: "emoji", x: rand(0, W), y: -30, vx: rand(-0.4, 0.4), vy: rand(1.6, 3.6),
+        sway: rand(0, 6.28), size: rand(20, 36), e: pick(EMOJIS), life: Infinity, age: 0
+      });
+    }
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.age++;
+      if (p.kind === "star") {
+        p.vx *= 0.98; p.vy = p.vy * 0.98 + 0.06;
+        p.x += p.vx; p.y += p.vy;
+        const k = 1 - p.age / p.life;
+        if (k <= 0) { parts.splice(i, 1); continue; }
+        spark(p.x, p.y, p.r * (0.4 + k), p.col, Math.min(1, k * 1.4));
+      } else {
+        p.y += p.vy; p.x += p.vx + Math.sin(p.age / 22 + p.sway) * 0.7;
+        if (p.y > H + 40) { parts.splice(i, 1); continue; }
+        ctx.font = p.size + "px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif";
+        ctx.globalAlpha = 1;
+        ctx.fillText(p.e, p.x, p.y);
+      }
+    }
+  }
+  function loop(t) { draw(t); requestAnimationFrame(loop); }
+  addEventListener("resize", () => { resize(); if (free) dodge(); });
+  resize();
+  if (!reduce) requestAnimationFrame(loop);
+
+  /* ---------- mensajes que aparecen palabra por palabra ---------- */
+  const msg = $("#msg");
+  async function say(text) {
+    msg.classList.remove("out");
+    msg.textContent = "";
+    const words = [];
+    text.split("\n").forEach((line) => {
+      const div = document.createElement("span");
+      div.className = "linea";
+      line.split(" ").forEach((w) => {
+        const s = document.createElement("span");
+        s.className = "w"; s.textContent = w;
+        div.appendChild(s); words.push(s);
+      });
+      msg.appendChild(div);
+    });
+    await sleep(60);
+    for (const w of words) { w.classList.add("on"); await sleep(380); }
+  }
+  async function clear() {
+    msg.classList.add("out");
+    await sleep(600);
+  }
+
+  /* ---------- palabras de alto impacto ---------- */
+  async function slam(text, i, hold) {
+    msg.classList.remove("out");
+    msg.textContent = "";
+    const s = document.createElement("span");
+    s.className = "slam c" + (i % 3);
+    s.textContent = text;
+    msg.appendChild(s);
+    burst(null, null, true);
+    await sleep(hold);
+  }
+
+  /* ---------- botón No que se escapa ---------- */
+  const actions = $("#actions"), yes = $("#yes"), no = $("#no");
+  let free = false, placeholder = null, lastMove = 0;
+
+  function dodge() {
+    const r = no.getBoundingClientRect();
+    if (!free) {
+      placeholder = document.createElement("span");
+      placeholder.style.cssText = "display:inline-block;width:" + r.width + "px;height:" + r.height + "px";
+      no.before(placeholder);
+      no.classList.add("free");
+      no.style.left = r.left + "px"; no.style.top = r.top + "px";
+      void no.offsetWidth;
+      free = true;
+    }
+    const w = no.offsetWidth, h = no.offsetHeight, m = 12;
+    const yr = yes.getBoundingClientRect();
+    let x, y, tries = 0;
+    do {
+      x = m + Math.random() * Math.max(1, innerWidth - w - 2 * m);
+      y = m + Math.random() * Math.max(1, innerHeight - h - 2 * m);
+      tries++;
+    } while (tries < 25 &&
+      Math.hypot(x + w / 2 - (yr.left + yr.width / 2), y + h / 2 - (yr.top + yr.height / 2)) < 150);
+    no.style.left = x + "px"; no.style.top = y + "px";
+  }
+  no.addEventListener("pointerdown", (e) => { e.preventDefault(); dodge(); });
+  no.addEventListener("click", (e) => { e.preventDefault(); dodge(); });
+  no.addEventListener("focus", dodge);
+  document.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse" || actions.hidden) return;
+    const now = performance.now();
+    if (now - lastMove < 180) return;
+    const r = no.getBoundingClientRect();
+    const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+    if (d < Math.max(r.width, r.height) * 0.9) { lastMove = now; dodge(); }
+  });
+
+  /* ---------- cuando dice que sí ---------- */
+  yes.addEventListener("click", async () => {
+    actions.classList.remove("show");
+    no.remove(); if (placeholder) placeholder.remove();
+    free = false;
+    await sleep(400);
+    actions.hidden = true;
+    msg.classList.add("out");
+    await sleep(500);
+    burst();
+    rain(14000);
+    const gracias = ["GRACIIAASSSSS", "eres súper", "duper", "Master", "pro", "plus", "max", "máquina de guerra", "Komodo 3000", "Terminator crack", "y mucho más"];
+    msg.classList.add("final");
+    if (reduce) {
+      await say("¡Yupiii! 🎉\n" + gracias.join(", ") + "\ncoordinamos al priv ✨");
+      return;
+    }
+    for (let i = 0; i < gracias.length; i++) {
+      await slam(gracias[i], i, i === gracias.length - 1 ? 1000 : 620);
+    }
+    await say("¡Yupiii! 🎉\ncoordinamos al priv ✨");
+  });
+
+  /* ---------- secuencia ---------- */
+  async function run() {
+    if (reduce) {
+      await say("¿Me acompañas al cine a ver Ebenezer? 🎬");
+      actions.hidden = false; actions.classList.add("show");
+      return;
+    }
+    await sleep(900);
+    if (NOMBRE) { await say("Hola, " + NOMBRE + " 💗"); await sleep(900); await clear(); }
+    await say("Te invito a ver una película ✨");
+    burst();
+    await sleep(1500);
+    await clear();
+    $("#afiche").classList.add("glow");
+    await say("Se llama Ebenezer 🕯️");
+    await sleep(1300);
+    await clear();
+    await say("¿Me acompañas al cine? 🎬");
+    actions.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => actions.classList.add("show")));
+  }
+  run();
+})();
+</script>
+</body>
+</html>
