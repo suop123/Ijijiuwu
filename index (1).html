@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#4a0f26">
+<title>Una invitación 💌</title>
+<meta property="og:title" content="Una invitación 💌">
+<meta property="og:description" content="Tengo algo para preguntarte ✨">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vino-900:#2a0714;
+    --vino-800:#4a0f26;
+    --vino-700:#5c1431;
+    --vino-600:#7c2148;
+    --burdeos:#6b1533;
+    --ciruela:#5a1230;
+    --rosa-palo:#e8b4bc;
+    --rosa-polvo:#f3d3d8;
+    --crema:#fbefea;
+    --oro:#d8b46a;
+    --oro-osc:#a8782a;
+    --serif:"Cormorant Garamond","Georgia",serif;
+    --sans:"Jost","Helvetica Neue",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    min-height:100vh;
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:200px 16px 150px;
+    background:radial-gradient(120% 90% at 50% 18%, var(--vino-600) 0%, var(--vino-700) 45%, #330a1b 100%);
+    background-attachment:fixed;
+    font-family:var(--sans);
+    color:var(--ciruela);
+    overflow-x:hidden;
+  }
+
+  /* fondo geométrico */
+  #geo{position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none}
+  #halo{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(150vmin,1100px); height:min(150vmin,1100px);
+    background:radial-gradient(circle, rgba(232,180,188,.30) 0%, rgba(232,180,188,.10) 38%, transparent 66%);
+  }
+  .g{position:absolute; width:calc(var(--s) * 1vmin); height:calc(var(--s) * 1vmin); transform:rotate(var(--r,0deg)); will-change:transform}
+  .circulo{border-radius:50%}
+  .circulo.c-rosa{background:rgba(232,180,188,.13)}
+  .circulo.c-oscuro{background:rgba(30,4,16,.40)}
+  .circulo.c-oro{background:rgba(216,180,106,.55)}
+  .anillo{border-radius:50%; border:1.5px solid}
+  .anillo.c-oro{border-color:rgba(216,180,106,.55)}
+  .anillo.c-rosa{border-color:rgba(232,180,188,.35)}
+  .rombo.c-oro{border:1.5px solid rgba(216,180,106,.55)}
+  .rombo.c-rosa{background:rgba(232,180,188,.14)}
+  .rombo.c-oscuro{background:rgba(30,4,16,.38)}
+  .triangulo svg{width:100%; height:100%; overflow:visible; display:block}
+  .triangulo.c-oro polygon{fill:none; stroke:rgba(216,180,106,.55); stroke-width:1.5}
+  .triangulo.c-oscuro polygon{fill:rgba(30,4,16,.40)}
+  .triangulo.c-rosa polygon{fill:rgba(232,180,188,.15)}
+  .g.linea{height:1.5px}
+  .linea.c-oro{background:linear-gradient(90deg,transparent,rgba(216,180,106,.65),transparent)}
+  .linea.c-rosa{background:linear-gradient(90deg,transparent,rgba(232,180,188,.45),transparent)}
+  .g.puntos{height:calc(var(--s) * .6vmin); background-size:20px 20px}
+  .puntos.c-rosa{background-image:radial-gradient(circle, rgba(232,180,188,.5) 1.6px, transparent 2.2px)}
+  .puntos.c-oro{background-image:radial-gradient(circle, rgba(216,180,106,.6) 1.6px, transparent 2.2px)}
+  .g.arco{height:calc(var(--s) * .5vmin); border:1.5px solid; border-bottom:0; border-radius:999px 999px 0 0}
+  .arco.c-oro{border-color:rgba(216,180,106,.5)}
+  .arco.c-rosa{border-color:rgba(232,180,188,.35)}
+  .mas.c-oro{color:rgba(216,180,106,.7)}
+  .mas.c-rosa{color:rgba(232,180,188,.55)}
+  .mas::before,.mas::after{content:""; position:absolute; background:currentColor}
+  .mas::before{left:0; right:0; top:50%; height:1.5px; transform:translateY(-50%)}
+  .mas::after{top:0; bottom:0; left:50%; width:1.5px; transform:translateX(-50%)}
+  @keyframes flota{
+    0%,100%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}
+    50%{transform:translate3d(0,-3vmin,0) rotate(calc(var(--r,0deg) + 8deg))}
+  }
+  @keyframes gira{to{transform:rotate(calc(var(--r,0deg) + 360deg))}}
+
+  /* brillitos perpetuos */
+  #fx{position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none}
+
+  /* destello */
+  #flash{
+    position:fixed; inset:0; z-index:4; pointer-events:none; opacity:0;
+    background:radial-gradient(circle at 50% 50%, rgba(255,246,224,.9), rgba(216,180,106,.45) 38%, transparent 70%);
+  }
+  #flash.go{animation:flash .9s ease-out}
+  @keyframes flash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+
+  /* afiche y foto */
+  .afiche, .esquina{
+    position:fixed; z-index:1; display:block; height:auto;
+    border:5px solid var(--crema); background:var(--crema);
+    outline:1px solid rgba(216,180,106,.7); outline-offset:3px;
+    box-shadow:0 18px 40px -10px rgba(10,0,6,.8);
+  }
+  .afiche{
+    top:14px; left:14px; width:96px; border-radius:4px; transform:rotate(-6deg);
+    opacity:0; transition:opacity 1.4s ease;
+  }
+  .afiche.on{opacity:1}
+  .afiche.glow{animation:glow 2.2s ease-in-out 2}
+  @keyframes glow{
+    0%,100%{box-shadow:0 18px 40px -10px rgba(10,0,6,.8)}
+    50%{box-shadow:0 0 0 4px rgba(216,180,106,.75), 0 0 44px 12px rgba(216,180,106,.55)}
+  }
+  .esquina{
+    bottom:14px; right:14px; width:112px; border-radius:10px; transform:rotate(5deg);
+    animation:flotaFoto 7s ease-in-out infinite;
+  }
+  @keyframes flotaFoto{
+    0%,100%{transform:translate3d(0,0,0) rotate(5deg)}
+    33%{transform:translate3d(-6px,-12px,0) rotate(2deg)}
+    66%{transform:translate3d(4px,-6px,0) rotate(7deg)}
+  }
+
+  /* carta */
+  .card{
+    position:relative; z-index:2;
+    width:min(92vw, 460px);
+    padding:52px 28px 36px;
+    background:linear-gradient(180deg,#fbefea,#f6dfe0 70%,#f1d3d8);
+    border-radius:16px;
+    box-shadow:0 30px 70px -18px rgba(10,0,6,.75), 0 0 0 1px rgba(216,180,106,.6), 0 0 0 8px rgba(251,239,234,.07);
+    text-align:center;
+  }
+  .card::before{
+    content:""; position:absolute; inset:10px; pointer-events:none;
+    border:1px solid rgba(168,120,42,.5); border-radius:9px;
+  }
+  .ornamento{
+    position:absolute; top:-10px; left:50%; width:20px; height:20px;
+    transform:translateX(-50%) rotate(45deg);
+    background:var(--oro); border:3px solid var(--vino-700); box-shadow:0 0 0 1px var(--oro);
+  }
+  .gatitos{
+    position:absolute; top:-30px; right:-6px; width:62px; height:62px;
+    border-radius:14px; border:2px solid var(--crema); transform:rotate(8deg);
+    box-shadow:0 8px 18px -6px rgba(10,0,6,.7);
+  }
+
+  #msg{
+    min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:var(--serif); font-style:italic; font-weight:600;
+    font-size:clamp(2rem, 8.4vw, 2.9rem); line-height:1.1; color:var(--ciruela);
+    transition:opacity .5s ease;
+  }
+  #msg.out{opacity:0}
+  #msg.final .linea:first-child{font-size:1.3em}
+  .linea{display:block}
+  .linea + .linea{margin-top:.35em; font-size:.72em}
+  .w{
+    display:inline-block; margin:0 .13em;
+    opacity:0; transform:translateY(10px); filter:blur(4px);
+    transition:opacity .45s ease, transform .6s cubic-bezier(.2,.8,.3,1), filter .45s ease;
+  }
+  .w.on{opacity:1; transform:none; filter:none}
+
+  .slam{
+    display:block; font-style:normal; font-weight:700; font-size:1.1em; text-align:center;
+    animation:slam .5s cubic-bezier(.2,1.5,.4,1) both;
+  }
+  .slam.c0{color:var(--ciruela)}
+  .slam.c1{color:#8c2147}
+  .slam.c2{color:var(--oro-osc)}
+  @keyframes slam{
+    0%{opacity:0; transform:scale(2.3); filter:blur(6px)}
+    60%{opacity:1; transform:scale(.96); filter:blur(0)}
+    100%{opacity:1; transform:scale(1); filter:blur(0)}
+  }
+
+  /* botones */
+  .actions{
+    display:flex; gap:16px; justify-content:center; align-items:center; flex-wrap:wrap;
+    margin-top:20px; opacity:0; transform:translateY(10px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .actions[hidden]{display:none}
+  .actions.show{opacity:1; transform:none}
+  .btn{
+    font-family:var(--sans); font-weight:500; font-size:1rem; letter-spacing:.08em; text-transform:uppercase;
+    border-radius:999px; padding:14px 34px; cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:focus-visible{outline:3px solid var(--oro-osc); outline-offset:3px}
+  #yes{
+    color:var(--crema); background:linear-gradient(135deg,#8c2147,var(--burdeos));
+    border:1px solid var(--oro); box-shadow:0 10px 22px rgba(90,18,48,.45);
+  }
+  #yes:hover{transform:scale(1.06)}
+  #no{
+    color:var(--ciruela); background:transparent; border:1px solid rgba(90,18,48,.55);
+  }
+  #no.free{position:fixed; z-index:6; background:var(--crema); box-shadow:0 8px 18px rgba(10,0,6,.35); transition:left .28s ease, top .28s ease}
+
+  /* mensaje final, dentro de la carta */
+  .aviso{
+    margin:18px 0 0; padding:12px 8px;
+    border-top:1px solid rgba(168,120,42,.6); border-bottom:1px solid rgba(168,120,42,.6);
+    font-family:var(--serif); font-style:italic; font-weight:600;
+    font-size:clamp(1.2rem, 5.2vw, 1.55rem); line-height:1.2; color:var(--burdeos);
+  }
+  .aviso[hidden]{display:none}
+  .aviso.late{animation:late 4.5s ease-in-out infinite}
+  @keyframes late{0%,100%{opacity:.55}50%{opacity:1}}
+
+  /* cuadro con la descripción de la película */
+  .sinopsis{
+    position:fixed; z-index:3; top:14px; left:124px; right:14px;
+    padding:12px 14px; border-radius:10px;
+    background:rgba(42,7,20,.62);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    border:1px solid rgba(216,180,106,.65);
+    box-shadow:0 14px 34px -10px rgba(10,0,6,.8);
+    color:var(--rosa-polvo); pointer-events:none;
+    opacity:0; transform:translateY(-8px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+  .sinopsis.on{opacity:1; transform:none}
+  .sinopsis h2{
+    margin:0 0 5px; font-family:var(--sans); font-weight:500; font-size:.72rem;
+    letter-spacing:.28em; text-transform:uppercase; color:var(--oro);
+  }
+  .sinopsis p{margin:0; font-family:var(--serif); font-style:italic; font-weight:500; font-size:.95rem; line-height:1.25}
+  .sinopsis .meta{
+    margin-top:7px; font-family:var(--sans); font-style:normal; font-size:.64rem;
+    letter-spacing:.2em; text-transform:uppercase; color:var(--oro);
+  }
+
+  /* pantalla de entrada */
+  #intro{
+    position:fixed; inset:0; z-index:8; display:flex; align-items:center; justify-content:center;
+    transition:opacity .7s ease;
+  }
+  #intro.fuera{opacity:0; pointer-events:none}
+  #abrir{
+    background:none; border:0; cursor:pointer; padding:24px;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    color:var(--rosa-polvo);
+  }
+  #abrir:focus-visible{outline:3px solid var(--oro); outline-offset:6px; border-radius:24px}
+  #abrir .sobre{
+    width:160px; height:120px; display:block;
+    filter:drop-shadow(0 14px 22px rgba(10,0,6,.6));
+    animation:latido 2.2s ease-in-out infinite;
+  }
+  #abrir .txt{font-family:var(--serif); font-style:italic; font-weight:600; font-size:2.3rem}
+  #abrir .sub{font-family:var(--sans); font-size:.8rem; letter-spacing:.24em; text-transform:uppercase; color:var(--oro)}
+  @keyframes latido{
+    0%,100%{transform:scale(1) rotate(-3deg)}
+    50%{transform:scale(1.07) rotate(3deg)}
+  }
+  .card, .esquina{transition:opacity .8s ease}
+  body.cerrada .card, body.cerrada .esquina{opacity:0; pointer-events:none}
+
+  /* pantallas grandes */
+  @media (min-width:900px){
+    body{padding:40px}
+    .afiche{
+      top:50%; left:max(3vw,24px); width:clamp(190px,18vw,260px);
+      transform:translateY(-50%) rotate(-5deg); border-width:6px;
+    }
+    .esquina{bottom:4vh; right:3vw; width:clamp(170px,16vw,230px); border-width:6px}
+    .sinopsis{left:50%; right:auto; top:24px; width:min(580px,44vw); padding:16px 24px; transform:translate(-50%,-8px)}
+    .sinopsis.on{transform:translate(-50%,0)}
+    .sinopsis p{font-size:1.15rem}
+    .sinopsis h2{font-size:.78rem}
+  }
+  @media (min-width:600px) and (max-width:899px){
+    .afiche{width:130px}
+    .esquina{width:150px}
+    .sinopsis{left:156px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .w, #msg, .actions, #no.free, #intro, .card, .esquina, .afiche{transition:none}
+    .afiche.glow, .esquina, #abrir .sobre{animation:none}
+    .aviso.late{animation:none; opacity:1}
+    .w{filter:none}
+  }
+</style>
+</head>
+<body class="cerrada">
+
+<div id="geo" aria-hidden="true"><div id="halo"></div></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div id="intro">
+  <button id="abrir" type="button" aria-label="Toca para abrir la invitación">
+    <svg class="sobre" viewBox="0 0 160 120" aria-hidden="true">
+      <rect x="4" y="14" width="152" height="100" rx="8" fill="#f3d3d8" stroke="#d8b46a" stroke-width="2"/>
+      <path d="M4 108 L62 60 M156 108 L98 60" stroke="#d8b46a" stroke-width="1.5" fill="none" opacity=".6"/>
+      <path d="M4 22 L80 74 L156 22" fill="none" stroke="#d8b46a" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="80" cy="74" r="15" fill="#7a1a40"/>
+      <path d="M80 82 C69 74 70 65 75.5 65 C78 65 80 67 80 68.5 C80 67 82 65 84.5 65 C90 65 91 74 80 82Z" fill="#f3d3d8"/>
+    </svg>
+    <span class="txt">Toca para abrir</span>
+    <span class="sub">con sonido ♪</span>
+  </button>
+</div>
+
+<div id="flash" aria-hidden="true"></div>
+
+<img class="afiche" id="afiche" src="afiche.jpg" width="250" height="370" alt="Afiche de la película Ebenezer">
+<img class="esquina" src="esquina.jpg" width="450" height="444" alt="Imagen con orejitas de gato y una rosa sobre un fondo de corazones rosas">
+
+<aside class="sinopsis" id="sinopsis" aria-label="Sobre la película">
+  <h2>Ebenezer</h2>
+  <p>Una versión oscura y gótica del clásico de Dickens, dirigida por Ti West. Johnny Depp es Ebenezer Scrooge en un Londres victoriano lleno de fantasmas. El nombre ya lo conoces; la historia, no.</p>
+  <p class="meta">Estreno · 13 de noviembre</p>
+</aside>
+
+<main class="card">
+  <span class="ornamento" aria-hidden="true"></span>
+  <img class="gatitos" src="gatitos.gif" width="165" height="165" alt="">
+  <div id="msg" aria-live="polite"></div>
+  <div class="actions" id="actions" hidden>
+    <button class="btn" id="yes" type="button">Sí</button>
+    <button class="btn" id="no" type="button">No</button>
+  </div>
+  <p class="aviso" id="aviso" hidden>hazme saber tu respuesta, te estaré esperando</p>
+</main>
+
+
+<script>
+(function () {
+  // Nombre que aparece en el saludo. Déjalo vacío ("") para quitarlo.
+  const NOMBRE = "Meliiiii";
+
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (s) => document.querySelector(s);
+  const sleep = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  /* ---------- fondo geométrico ---------- */
+  // [forma, color, izquierda %, arriba %, tamaño (vmin), animación, duración s, rotación °]
+  const FORMAS = [
+    ["circulo",   "c-rosa",   -6,  4, 44, "flota", 30, 0],
+    ["circulo",   "c-oscuro", 66, 58, 52, "flota", 36, 0],
+    ["anillo",    "c-oro",    84,  6, 26, "gira",  80, 0],
+    ["anillo",    "c-rosa",    3, 64, 20, "flota", 24, 0],
+    ["anillo",    "c-oro",    44, 70,  9, "flota", 20, 0],
+    ["rombo",     "c-oro",    72, 24, 14, "gira",  90, 45],
+    ["rombo",     "c-rosa",   10, 40, 11, "flota", 26, 45],
+    ["triangulo", "c-oro",    18, 80, 13, "gira", 100, 0],
+    ["triangulo", "c-oscuro", 86, 40, 12, "flota", 32, 20],
+    ["triangulo", "c-rosa",   52,  6, 10, "flota", 28, -15],
+    ["linea",     "c-oro",    58, 90, 34, "flota", 28, -28],
+    ["linea",     "c-rosa",    0, 28, 26, "flota", 34, 62],
+    ["linea",     "c-oro",    78, 84, 22, "flota", 30, 20],
+    ["puntos",    "c-rosa",   80, 76, 24, "flota", 40, 0],
+    ["puntos",    "c-oro",     6,  6, 18, "flota", 36, 0],
+    ["arco",      "c-oro",    36, 90, 20, "flota", 26, 0],
+    ["arco",      "c-rosa",   92, 52, 16, "flota", 30, 90],
+    ["mas",       "c-oro",    32, 14,  3.2, "gira", 40, 0],
+    ["mas",       "c-oro",    64, 94,  3.6, "gira", 46, 0],
+    ["mas",       "c-rosa",   94, 72,  3,   "gira", 50, 0],
+    ["mas",       "c-oro",     2, 52,  3,   "gira", 44, 0],
+    ["circulo",   "c-oro",    40, 88,  3,   "flota", 18, 0],
+    ["circulo",   "c-oro",    92, 20,  2.4, "flota", 22, 0],
+    ["circulo",   "c-rosa",   24, 24,  7,   "flota", 24, 0]
+  ];
+  const geo = $("#geo");
+  FORMAS.forEach((f, i) => {
+    const tipo = f[0], color = f[1], x = f[2], y = f[3], s = f[4], anim = f[5], dur = f[6], rot = f[7];
+    const el = document.createElement("div");
+    el.className = "g " + tipo + " " + color;
+    el.style.left = x + "%";
+    el.style.top = y + "%";
+    el.style.setProperty("--s", s);
+    el.style.setProperty("--r", rot + "deg");
+    if (tipo === "triangulo") {
+      el.innerHTML = '<svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,6 94,90 6,90"/></svg>';
+    }
+    if (!reduce) {
+      const delay = -((i * 3.7) % dur);
+      el.style.animation = anim + " " + dur + "s " + (anim === "gira" ? "linear" : "ease-in-out") + " " + delay.toFixed(1) + "s infinite";
+    }
+    geo.appendChild(el);
+  });
+
+  /* ---------- canvas: brillitos, destello y lluvia ---------- */
+  const cv = $("#fx"), ctx = cv.getContext("2d");
+  const COLS = ["#fff6e0", "#f1d9a0", "#d8b46a", "#f3d3d8"];
+  const RAIN = ["#e8b4bc", "#f3d3d8", "#c9506f", "#d8b46a", "#fff6e0"];
+  let W, H, stars = [], parts = [], rainUntil = 0;
+
+  function mkStar(initial) {
+    return {
+      x: rand(0, W), y: initial ? rand(0, H) : H + 12,
+      r: rand(2.2, 7), ph: rand(0, 6.28), sp: rand(0.8, 2.2),
+      vy: rand(0.08, 0.3), col: pick(COLS)
+    };
+  }
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(90, (W * H) / 11000));
+    stars = Array.from({ length: n }, () => mkStar(true));
+    if (reduce) draw(0);
+  }
+  function spark(x, y, r, col, a) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.globalAlpha = a * 0.25;
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.9, 0, 6.283); ctx.fill();
+    ctx.globalAlpha = a;
+    ctx.beginPath();
+    ctx.moveTo(0, -r);
+    ctx.quadraticCurveTo(0, 0, r, 0);
+    ctx.quadraticCurveTo(0, 0, 0, r);
+    ctx.quadraticCurveTo(0, 0, -r, 0);
+    ctx.quadraticCurveTo(0, 0, 0, -r);
+    ctx.fill();
+    ctx.restore();
+  }
+  function heart(x, y, s, col, a, rot) {
+    ctx.save();
+    ctx.translate(x, y); ctx.rotate(rot);
+    ctx.globalAlpha = a; ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.moveTo(0, s * 0.9);
+    ctx.bezierCurveTo(-s * 1.3, s * 0.1, -s * 0.7, -s * 0.9, 0, -s * 0.35);
+    ctx.bezierCurveTo(s * 0.7, -s * 0.9, s * 1.3, s * 0.1, 0, s * 0.9);
+    ctx.fill();
+    ctx.restore();
+  }
+  function burst(x, y, small) {
+    if (x == null) {
+      const b = $(".card").getBoundingClientRect();
+      x = b.left + b.width / 2; y = b.top + b.height / 2;
+    }
+    if (!small) {
+      const f = $("#flash");
+      f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
+    }
+    if (reduce) return;
+    for (let i = 0; i < (small ? 16 : 44); i++) {
+      const a = rand(0, 6.283), s = rand(2, 8);
+      parts.push({
+        kind: "star", x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+        r: rand(3, 10), col: pick(COLS), life: rand(55, 100), age: 0
+      });
+    }
+  }
+  function rain(ms) {
+    if (reduce) return;
+    rainUntil = performance.now() + ms;
+  }
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    for (const s of stars) {
+      if (!reduce) {
+        s.y -= s.vy;
+        if (s.y < -12) Object.assign(s, mkStar(false));
+      }
+      const a = reduce ? 0.7 : 0.3 + 0.7 * Math.abs(Math.sin(t / 1000 * s.sp + s.ph));
+      spark(s.x, s.y, s.r, s.col, a);
+    }
+    if (reduce) return;
+    if (t < rainUntil && parts.length < 320 && Math.random() < 0.55) {
+      parts.push({
+        kind: "fall", shape: Math.random() < 0.6 ? "heart" : "spark",
+        x: rand(0, W), y: -30, vx: rand(-0.4, 0.4), vy: rand(1.4, 3.2),
+        sway: rand(0, 6.28), s: rand(6, 13), col: pick(RAIN),
+        rot: rand(-0.5, 0.5), vr: rand(-0.02, 0.02), age: 0
+      });
+    }
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.age++;
+      if (p.kind === "star") {
+        p.vx *= 0.98; p.vy = p.vy * 0.98 + 0.06;
+        p.x += p.vx; p.y += p.vy;
+        const k = 1 - p.age / p.life;
+        if (k <= 0) { parts.splice(i, 1); continue; }
+        spark(p.x, p.y, p.r * (0.4 + k), p.col, Math.min(1, k * 1.4));
+      } else {
+        p.y += p.vy; p.x += p.vx + Math.sin(p.age / 22 + p.sway) * 0.7; p.rot += p.vr;
+        if (p.y > H + 40) { parts.splice(i, 1); continue; }
+        if (p.shape === "heart") heart(p.x, p.y, p.s, p.col, 0.95, p.rot);
+        else spark(p.x, p.y, p.s * 1.1, p.col, 1);
+      }
+    }
+  }
+  function loop(t) { draw(t); requestAnimationFrame(loop); }
+  addEventListener("resize", () => { resize(); if (free) dodge(); });
+  resize();
+  if (!reduce) requestAnimationFrame(loop);
+
+  /* ---------- mensajes que aparecen palabra por palabra ---------- */
+  const msg = $("#msg");
+  async function say(text) {
+    msg.classList.remove("out");
+    msg.textContent = "";
+    const words = [];
+    text.split("\n").forEach((line) => {
+      const div = document.createElement("span");
+      div.className = "linea";
+      line.split(" ").forEach((w) => {
+        const s = document.createElement("span");
+        s.className = "w"; s.textContent = w;
+        div.appendChild(s); words.push(s);
+      });
+      msg.appendChild(div);
+    });
+    await sleep(60);
+    for (const w of words) { w.classList.add("on"); await sleep(380); }
+  }
+  async function clear() {
+    msg.classList.add("out");
+    await sleep(600);
+  }
+
+  /* ---------- sonido: sube estos archivos junto al index.html ---------- */
+  const fondo = new Audio("musica-fondo.mp3");   // suena desde que abre la carta
+  const cancionSi = new Audio("musica-si.mp3");  // suena cuando dice que sí
+  const sonidoNo = new Audio("sonido-no.mp3");   // efecto al tocar el No
+  const glitter = new Audio("sonido-glitter.mp3"); // brillitos al decir que sí
+  const yippee = new Audio("sonido-yippee.mp3");   // el yupi al decir que sí
+  fondo.loop = true; cancionSi.loop = true;
+  fondo.volume = 0.6;
+  function fade(a, to, ms, done) {
+    const from = a.volume, steps = 20;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      a.volume = Math.max(0, Math.min(1, from + (to - from) * i / steps));
+      if (i >= steps) { clearInterval(id); if (done) done(); }
+    }, ms / steps);
+  }
+  function unlock(a) {
+    a.muted = true;
+    a.play().then(() => { a.pause(); try { a.currentTime = 0; } catch (e) {} a.muted = false; })
+      .catch(() => { a.muted = false; });
+  }
+  function sonarNo() {
+    try { sonidoNo.currentTime = 0; } catch (e) {}
+    sonidoNo.play().catch(() => {});
+  }
+  function sonarSi() {
+    // 1) baja la música de fondo, 2) glitter + yupi a la vez, 3) recién después entra la canción
+    fade(fondo, 0, 600, () => fondo.pause());
+    let entro = false;
+    const cancion = () => {
+      if (entro) return;
+      entro = true;
+      cancionSi.volume = 0;
+      try { cancionSi.currentTime = 0; } catch (e) {}
+      cancionSi.play().then(() => fade(cancionSi, 0.85, 1500)).catch(() => {});
+    };
+    glitter.addEventListener("ended", cancion, { once: true });
+    setTimeout(cancion, 8000);
+    glitter.play().catch(cancion);
+    yippee.play().catch(() => {});
+  }
+
+  /* ---------- palabras de alto impacto ---------- */
+  async function slam(text, i, hold) {
+    msg.classList.remove("out");
+    msg.textContent = "";
+    const s = document.createElement("span");
+    s.className = "slam c" + (i % 3);
+    s.textContent = text;
+    msg.appendChild(s);
+    burst(null, null, true);
+    await sleep(hold);
+  }
+
+  /* ---------- botón No que se escapa ---------- */
+  const actions = $("#actions"), yes = $("#yes"), no = $("#no");
+  let free = false, placeholder = null, lastMove = 0;
+
+  function dodge() {
+    const r = no.getBoundingClientRect();
+    if (!free) {
+      placeholder = document.createElement("span");
+      placeholder.style.cssText = "display:inline-block;width:" + r.width + "px;height:" + r.height + "px";
+      no.before(placeholder);
+      no.classList.add("free");
+      no.style.left = r.left + "px"; no.style.top = r.top + "px";
+      void no.offsetWidth;
+      free = true;
+    }
+    const w = no.offsetWidth, h = no.offsetHeight, m = 12;
+    const yr = yes.getBoundingClientRect();
+    let x, y, tries = 0;
+    do {
+      x = m + Math.random() * Math.max(1, innerWidth - w - 2 * m);
+      y = m + Math.random() * Math.max(1, innerHeight - h - 2 * m);
+      tries++;
+    } while (tries < 25 &&
+      Math.hypot(x + w / 2 - (yr.left + yr.width / 2), y + h / 2 - (yr.top + yr.height / 2)) < 150);
+    no.style.left = x + "px"; no.style.top = y + "px";
+  }
+  no.addEventListener("pointerdown", (e) => { e.preventDefault(); sonarNo(); dodge(); });
+  no.addEventListener("click", (e) => { e.preventDefault(); dodge(); });
+  no.addEventListener("focus", dodge);
+  document.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse" || actions.hidden) return;
+    const now = performance.now();
+    if (now - lastMove < 180) return;
+    const r = no.getBoundingClientRect();
+    const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+    if (d < Math.max(r.width, r.height) * 0.9) { lastMove = now; dodge(); }
+  });
+
+  /* ---------- cuando dice que sí ---------- */
+  function mostrarAviso() {
+    const s = $("#aviso");
+    s.hidden = false; void s.offsetWidth; s.classList.add("late");
+  }
+  yes.addEventListener("click", async () => {
+    sonarSi();
+    actions.classList.remove("show");
+    no.remove(); if (placeholder) placeholder.remove();
+    free = false;
+    await sleep(400);
+    actions.hidden = true;
+    msg.classList.add("out");
+    await sleep(500);
+    burst();
+    rain(14000);
+    const gracias = ["GRACIIAASSSSS", "eres súper", "duper", "Master", "pro", "plus", "max", "máquina de guerra", "Komodo 3000", "Terminator", "crack", "y mucho más"];
+    msg.classList.add("final");
+    if (reduce) {
+      await say("¡Yupiii!\n" + gracias.join(", ") + "\ncoordinamos al priv ✨");
+      mostrarAviso();
+      return;
+    }
+    for (let i = 0; i < gracias.length; i++) {
+      await slam(gracias[i], i, i === gracias.length - 1 ? 1000 : 620);
+    }
+    await say("¡Yupiii!\ncoordinamos al priv ✨");
+    mostrarAviso();
+  });
+
+  /* ---------- secuencia ---------- */
+  async function run() {
+    const afiche = $("#afiche");
+    if (reduce) {
+      afiche.classList.add("on");
+      $("#sinopsis").classList.add("on");
+      await say("¿Me acompañas al cine a ver Ebenezer?");
+      actions.hidden = false; actions.classList.add("show");
+      return;
+    }
+    await sleep(900);
+    if (NOMBRE) { await say("Hola, " + NOMBRE + " ♡"); await sleep(900); await clear(); }
+    await say("Te invito a ver una película ✨");
+    burst();
+    await sleep(1500);
+    await clear();
+    afiche.classList.add("on", "glow");
+    await say("Se llama Ebenezer");
+    await sleep(1500);
+    await clear();
+    $("#sinopsis").classList.add("on");
+    await say("¿Me acompañas al cine?");
+    actions.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => actions.classList.add("show")));
+  }
+  $("#abrir").addEventListener("click", () => {
+    unlock(cancionSi); unlock(sonidoNo); unlock(glitter); unlock(yippee);
+    fondo.play().catch(() => {});
+    document.body.classList.remove("cerrada");
+    const intro = $("#intro");
+    intro.classList.add("fuera");
+    setTimeout(() => intro.remove(), 800);
+    burst(null, null, true);
+    run();
+  }, { once: true });
+})();
+</script>
+</body>
+</html>
